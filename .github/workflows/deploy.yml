@@ -33,10 +33,10 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Clear S3 Bucket (Remove Existing Files)
-        run: aws s3 rm s3://${{ secrets.S3_BUCKET_NAME }} --recursive --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
+        run: aws s3 rm s3://${{ secrets.S3_BUCKET_NAME }} --recursive
 
       - name: Upload Build to S3
-        run: aws s3 sync build/ s3://${{ secrets.S3_BUCKET_NAME }}
+        run: aws s3 sync build/ s3://${{ secrets.S3_BUCKET_NAME }} --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
