@@ -1,0 +1,42 @@
+name: Deploy Frontend Code to S3
+
+on:
+  push:
+    tags:
+      - "v*"  # tag rule (v1.0.0)
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Load Environment Variables
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Verify Build Folder
+        run: ls -la build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Clear S3 Bucket (Remove Existing Files)
+        run: aws s3 rm s3://${{ secrets.S3_BUCKET_NAME }} --recursive
+
+      - name: Upload Build to S3
+        run: aws s3 sync build/ s3://${{ secrets.S3_BUCKET_NAME }} --acl public-read
+
+      - name: Invalidate CloudFront Cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
