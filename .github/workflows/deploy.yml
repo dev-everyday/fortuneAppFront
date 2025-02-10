@@ -27,7 +27,8 @@ jobs:
         run: npm install && npm install -g cross-env
 
       - name: Build Project
-        run: npm run build:prod
+        run: |
+          export $(grep -v '^#' .env.prod | xargs) && npm run build:prod
 
       - name: Verify Build Folder
         run: ls -la build
