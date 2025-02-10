@@ -14,13 +14,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Load Environment Variables
-        run: echo "${{ secrets.ENV_FILE }}" > .env
+        run: printf "%s" "${{ secrets.ENV_FILE }}" > .env.prod
 
       - name: Install Dependencies
         run: npm install
 
       - name: Build Project
-        run: npm run build
+        run: npm run build:prod
 
       - name: Verify Build Folder
         run: ls -la build
