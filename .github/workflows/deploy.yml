@@ -16,6 +16,9 @@ jobs:
       - name: Load Environment Variables
         run: printf "%s" "${{ secrets.ENV_FILE }}" > .env.prod
 
+      - name: Debug .env.prod Content
+        run: cat .env.prod
+
       - name: Install Dependencies
         run: npm install && npm install -g cross-env
 
