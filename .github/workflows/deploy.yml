@@ -14,11 +14,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Load Environment Variables
-        run: printf "%s" "${{ secrets.ENV_FILE }}" > .env.prod
+        run: |
+          echo -e "${{ secrets.ENV_FILE }}" > .env.prod
 
       - name: Debug .env.prod Content
         run: cat .env.prod
 
+      - name: Debug Secret ENV_FILE
+        run: echo "${{ secrets.ENV_FILE }}"
+        
       - name: Install Dependencies
         run: npm install && npm install -g cross-env
 
