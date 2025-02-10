@@ -13,10 +13,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Load Environment Variables
+      - name: Decode Base64 and Save .env.prod
         run: |
-          echo -e "${{ secrets.ENV_FILE }}" > .env.prod
-
+          echo "${{ secrets.ENV_FILE }}" | base64 --decode > .env.prod
+          
       - name: Debug .env.prod Content
         run: cat .env.prod
 
