@@ -33,7 +33,7 @@ const Profile = () => {
   
   const handleLogout = async () => {
     try {
-      await axiosInstance.post("/logout",{},{withCredentials:true});
+      await axiosInstance.post("/logout",{});
       dispatch(clearInfo());
       document.cookie = "accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure";
 
