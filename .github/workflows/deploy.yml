@@ -17,7 +17,7 @@ jobs:
         run: printf "%s" "${{ secrets.ENV_FILE }}" > .env.prod
 
       - name: Install Dependencies
-        run: npm install
+        run: npm install && npm install -g cross-env
 
       - name: Build Project
         run: npm run build:prod
