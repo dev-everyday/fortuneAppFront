@@ -31,6 +31,7 @@ const Signup = () => {
 
     const requestData = {
       userId,
+      email,
       nickname,
       birth
     };
